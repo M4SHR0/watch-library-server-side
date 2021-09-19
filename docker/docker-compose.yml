@@ -1,0 +1,12 @@
+version: "3"
+services:
+  mysql:
+    build: ./db/
+    volumes:
+      - ./db/sql:/docker-entrypoint-initdb.d
+      - ./db/data:/var/lib/mysql
+    image: watch_library_mysql
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=mywatchlibrarysql
