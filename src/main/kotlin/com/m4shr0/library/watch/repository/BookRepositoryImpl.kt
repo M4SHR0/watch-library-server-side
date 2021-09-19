@@ -121,4 +121,17 @@ class BookRepositoryImpl(
             request.note
         )
     }
+
+    override fun deleteOne(id: Int) {
+        val sql = """
+            DELETE 
+            FROM 
+                book
+            WHERE
+                id=?
+        """.trimIndent()
+
+        jdbcTemplate.update(sql,id)
+    }
+
 }

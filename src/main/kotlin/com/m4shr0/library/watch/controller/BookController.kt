@@ -35,4 +35,9 @@ class BookController(
             )
         )
     }
+
+    @DeleteMapping("/delete/{id}")
+    fun deleteBook(@PathVariable("id") id: Int){
+        bookService.deleteBook(id)
+    }
 }
