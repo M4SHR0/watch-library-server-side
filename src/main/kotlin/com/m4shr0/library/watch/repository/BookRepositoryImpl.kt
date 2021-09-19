@@ -2,6 +2,7 @@ package com.m4shr0.library.watch.repository
 
 import com.m4shr0.library.watch.model.Book
 import com.m4shr0.library.watch.model.RegisterBookRequest
+import com.m4shr0.library.watch.model.UpdateBookRequest
 import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
@@ -134,4 +135,27 @@ class BookRepositoryImpl(
         jdbcTemplate.update(sql,id)
     }
 
+    override fun updateOne(request: UpdateBookRequest) {
+        val sql = """
+            UPDATE
+                book
+            SET
+                name = ?,
+                author = ?,
+                publisher = ?,
+                isbn = ?,
+                note = ?
+            WHERE
+                id = ?
+        """.trimIndent()
+
+        jdbcTemplate.update(sql,
+            request.name,
+            request.author,
+            request.publisher,
+            request.isbn,
+            request.note,
+            request.id
+        )
+    }
 }

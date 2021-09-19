@@ -2,6 +2,7 @@ package com.m4shr0.library.watch.service
 
 import com.m4shr0.library.watch.model.Book
 import com.m4shr0.library.watch.model.RegisterBookRequest
+import com.m4shr0.library.watch.model.UpdateBookRequest
 import com.m4shr0.library.watch.repository.BookRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -31,5 +32,10 @@ class BookService(
     @Transactional
     fun deleteBook(id: Int){
         bookRepository.deleteOne(id)
+    }
+
+    @Transactional
+    fun updateBook(request: UpdateBookRequest){
+        bookRepository.updateOne(request)
     }
 }
