@@ -11,4 +11,6 @@ interface BookRepository{
     fun selectByISBN(isbn: String): Book?
 
     fun registerOne(request: RegisterBookRequest)
+
+    fun deleteOne(id: Int)
 }

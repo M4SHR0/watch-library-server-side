@@ -28,4 +28,8 @@ class BookService(
         bookRepository.registerOne(request)
     }
 
+    @Transactional
+    fun deleteBook(id: Int){
+        bookRepository.deleteOne(id)
+    }
 }
