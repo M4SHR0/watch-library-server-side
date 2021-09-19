@@ -40,4 +40,19 @@ class BookController(
     fun deleteBook(@PathVariable("id") id: Int){
         bookService.deleteBook(id)
     }
+
+    @PutMapping("/update")
+    fun updateBook(@RequestBody request: UpdateBookRequest){
+        val preBook = bookService.getDetail(request.id)
+        bookService.updateBook(
+            UpdateBookRequest(
+                request.id,
+                request.name ?: preBook.name,
+                request.author ?: preBook.author,
+                request.publisher ?: preBook.publisher,
+                request.isbn ?: preBook.isbn,
+                request.note ?: preBook.note
+            )
+        )
+    }
 }
