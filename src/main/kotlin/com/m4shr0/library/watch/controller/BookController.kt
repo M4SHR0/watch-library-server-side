@@ -1,12 +1,8 @@
 package com.m4shr0.library.watch.controller
 
-import com.m4shr0.library.watch.model.BookDisplayInfo
-import com.m4shr0.library.watch.model.GetBookListResponse
+import com.m4shr0.library.watch.model.*
 import com.m4shr0.library.watch.service.BookService
-import org.springframework.web.bind.annotation.CrossOrigin
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("book")
@@ -20,5 +16,23 @@ class BookController(
             BookDisplayInfo(it)
         }
         return GetBookListResponse(bookList)
+    }
+
+    @GetMapping("/detail/{id}")
+    fun getDetail(@PathVariable("id") id: Int): GetBookDetailResponse {
+        return GetBookDetailResponse(bookService.getDetail(id))
+    }
+
+    @PostMapping("/register")
+    fun registerBook(@RequestBody request: RegisterBookRequest){
+        bookService.registerBook(
+            RegisterBookRequest(
+                request.name,
+                request.author,
+                request.publisher,
+                request.isbn,
+                request.note
+            )
+        )
     }
 }

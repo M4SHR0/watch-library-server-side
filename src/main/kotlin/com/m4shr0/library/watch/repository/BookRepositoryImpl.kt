@@ -1,6 +1,8 @@
 package com.m4shr0.library.watch.repository
 
 import com.m4shr0.library.watch.model.Book
+import com.m4shr0.library.watch.model.RegisterBookRequest
+import org.springframework.dao.EmptyResultDataAccessException
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.core.RowMapper
 import org.springframework.stereotype.Repository
@@ -17,7 +19,8 @@ class BookRepositoryImpl(
                 resultSet.getString("author"),
                 resultSet.getString("publisher"),
                 resultSet.getString("isbn"),
-                resultSet.getString("note"))
+                resultSet.getString("note")
+            )
         }
 
         val sql = """
@@ -33,5 +36,89 @@ class BookRepositoryImpl(
         """.trimIndent()
 
         return jdbcTemplate.query(sql,rowMapper)
+    }
+
+    override fun selectByPrimaryKey(id: Int): Book? {
+        val sql = """
+            SELECT
+                id,
+                name,
+                author,
+                publisher,
+                ISBN,
+                note
+            FROM
+                book
+            WHERE
+                id = ?
+        """.trimIndent()
+
+        try {
+            val record: Map<String,Any> = jdbcTemplate.queryForMap(sql,id)
+
+            return Book(
+                record["id"].toString().toInt(),
+                record["name"].toString(),
+                record["author"].toString(),
+                record["publisher"].toString(),
+                record["ISBN"].toString(),
+                record["note"].toString()
+            )
+        }catch (e : EmptyResultDataAccessException){
+            return null
+        }
+
+    }
+
+    override fun selectByISBN(isbn: String): Book? {
+        val sql = """
+            SELECT
+                id,
+                name,
+                author,
+                publisher,
+                ISBN,
+                note
+            FROM
+                book
+            WHERE
+                isbn = ?
+        """.trimIndent()
+
+        try {
+            val record: Map<String,Any> = jdbcTemplate.queryForMap(sql,isbn)
+
+            return Book(
+                record["id"].toString().toInt(),
+                record["name"].toString(),
+                record["author"].toString(),
+                record["publisher"].toString(),
+                record["ISBN"].toString(),
+                record["note"].toString()
+            )
+        }catch (e : EmptyResultDataAccessException){
+            return null
+        }
+
+    }
+
+    override fun registerOne(request: RegisterBookRequest) {
+        val sql = """
+            INSERT INTO book (
+                name,
+                author,
+                publisher,
+                ISBN,
+                note
+            ) VALUES (?,?,?,?,?)
+        """.trimIndent()
+
+        jdbcTemplate.update(sql,
+            request.name,
+            request.author,
+            request.publisher,
+            request.isbn,
+            request.note
+        )
     }
 }
