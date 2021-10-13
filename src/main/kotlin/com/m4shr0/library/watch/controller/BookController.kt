@@ -12,9 +12,7 @@ class BookController(
 ) {
     @GetMapping("/list")
     fun getList(): GetBookListResponse{
-        val bookList = bookService.getList().map{
-            BookDisplayInfo(it)
-        }
+        val bookList = bookService.getList()
         return GetBookListResponse(bookList)
     }
 
